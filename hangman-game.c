@@ -1,14 +1,18 @@
 #include <stdio.h>
 #include <string.h>
 
+char secretword[20];
+char guesses[26];
+int tries = 0;
+
 void opening()
 {
-    printf("**************************\n");
-    printf("*    THE HANGMAN GAME    *\n");
-    printf("**************************\n\n");
+    printf("/**************************/\n");
+    printf("/*    THE HANGMAN GAME    */\n");
+    printf("/**************************/\n\n");
 }
 
-void guessing(char guesses[26], int tries)
+void guessing()
 {
     // Captures a new guess
     char guess;
@@ -18,50 +22,60 @@ void guessing(char guesses[26], int tries)
     guesses[tries] = guess;
 }
 
+int alreadyguessed(char letter)
+{
+    int found = 0;
+
+    // The letter was already guessed?
+    for (int j = 0; j < tries; j++)
+    {
+        if (guesses[j] == letter)
+        {
+            found = 1;
+            break;
+        }
+    }
+    return found;
+}
+
+void showhang()
+{
+    printf("You already guessed %d times\n", tries);
+
+    // Prints the secretword
+    for (int i = 0; i < strlen(secretword); i++)
+    {
+        if (alreadyguessed(secretword[i]))
+        {
+            printf("%c ", secretword[i]);
+        }
+        else
+        {
+            printf("_ ");
+        }
+    }
+    printf("\n");
+}
+
+void choosenword()
+{
+    sprintf(secretword, "MUSTANG");
+}
+
 int main()
 {
-
-    char secretword[20];
-    sprintf(secretword, "MUSTANG");
 
     int win = 0;
     int hanged = 0;
 
-    char guesses[26];
-    int tries = 0;
-
     opening();
+    choosenword();
 
     do
     {
+        showhang();
+        guessing();
 
-        // Prints the secretword
-        for (int i = 0; i < strlen(secretword); i++)
-        {
-            int found = 0;
-
-            // The letter was already guessed?
-            for (int j = 0; j < tries; j++)
-            {
-                if (guesses[j] == secretword[i])
-                {
-                    found = 1;
-                    break;
-                }
-            }
-
-            if (found)
-            {
-                printf("%c ", secretword[i]);
-            }
-            else
-            {
-                printf("_ ");
-            }
-        }
-        printf("\n");
-
-        guessing(guesses, tries);
         tries++;
 
     } while (!win && !hanged);
