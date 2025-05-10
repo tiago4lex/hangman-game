@@ -8,6 +8,17 @@ void opening()
     printf("**************************\n\n");
 }
 
+void guessing()
+{
+    // Captures a new guess
+    char guess;
+    printf("What is the letter? ");
+    scanf(" %c", &guess);
+
+    guesses[tries] = guess;
+    tries++;
+}
+
 int main()
 {
 
@@ -20,13 +31,17 @@ int main()
     char guesses[26];
     int tries = 0;
 
+    opening();
+
     do
     {
 
+        // Prints the secretword
         for (int i = 0; i < strlen(secretword); i++)
         {
             int found = 0;
 
+            // The letter was already guessed?
             for (int j = 0; j < tries; j++)
             {
                 if (guesses[j] == secretword[i])
@@ -47,12 +62,7 @@ int main()
         }
         printf("\n");
 
-        char guess;
-        printf("What is the letter? ");
-        scanf(" %c", &guess);
-
-        guesses[tries] = guess;
-        tries++;
+        guessing();
 
     } while (!win && !hanged);
 }
