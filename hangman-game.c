@@ -1,15 +1,23 @@
 #include <stdio.h>
 #include <string.h>
 
+void opening()
+{
+    printf("**************************\n");
+    printf("*    THE HANGMAN GAME    *\n");
+    printf("**************************\n\n");
+}
+
 int main()
 {
+
     char secretword[20];
-    sprintf(secretword, "MUSTANG"); // Print String
+    sprintf(secretword, "MUSTANG");
 
     int win = 0;
-    int hanged = 1;
+    int hanged = 0;
 
-    char guesses[26]; // 26 letters of the alphabet
+    char guesses[26];
     int tries = 0;
 
     do
@@ -23,7 +31,6 @@ int main()
             {
                 if (guesses[j] == secretword[i])
                 {
-                    printf("---> right guess!\n");
                     found = 1;
                     break;
                 }
@@ -31,7 +38,7 @@ int main()
 
             if (found)
             {
-                printf("%c", secretword[i]);
+                printf("%c ", secretword[i]);
             }
             else
             {
