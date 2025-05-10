@@ -9,18 +9,43 @@ int main()
     int win = 0;
     int hanged = 1;
 
+    char guesses[26]; // 26 letters of the alphabet
+    int tries = 0;
+
     do
     {
-        char guess;
-        scanf("%c", &guess);
 
         for (int i = 0; i < strlen(secretword); i++)
         {
-            if (secretword[i] == guess)
+            int found = 0;
+
+            for (int j = 0; j < tries; j++)
             {
-                printf("The position %d has that letter!\n", i);
+                if (guesses[j] == secretword[i])
+                {
+                    printf("---> right guess!\n");
+                    found = 1;
+                    break;
+                }
+            }
+
+            if (found)
+            {
+                printf("%c", secretword[i]);
+            }
+            else
+            {
+                printf("_ ");
             }
         }
+        printf("\n");
+
+        char guess;
+        printf("What is the letter? ");
+        scanf(" %c", &guess);
+
+        guesses[tries] = guess;
+        tries++;
 
     } while (!win && !hanged);
 }
