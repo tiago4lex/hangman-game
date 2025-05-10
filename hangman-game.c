@@ -8,7 +8,7 @@ void opening()
     printf("**************************\n\n");
 }
 
-void guessing()
+void guessing(char guesses[26], int tries)
 {
     // Captures a new guess
     char guess;
@@ -16,7 +16,6 @@ void guessing()
     scanf(" %c", &guess);
 
     guesses[tries] = guess;
-    tries++;
 }
 
 int main()
@@ -62,7 +61,8 @@ int main()
         }
         printf("\n");
 
-        guessing();
+        guessing(guesses, tries);
+        tries++;
 
     } while (!win && !hanged);
 }
