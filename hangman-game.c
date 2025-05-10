@@ -5,14 +5,14 @@ char secretword[20];
 char guesses[26];
 int tries = 0;
 
-void opening()
+void displayWelcomeMessage()
 {
     printf("/**************************/\n");
     printf("/*    THE HANGMAN GAME    */\n");
     printf("/**************************/\n\n");
 }
 
-void guessing()
+void handleUserGuess()
 {
     // Captures a new guess
     char guess;
@@ -22,30 +22,30 @@ void guessing()
     guesses[tries] = guess;
 }
 
-int alreadyguessed(char letter)
+int checkIfGuessed(char letter)
 {
-    int found = 0;
+    int characterExists = 0;
 
     // The letter was already guessed?
     for (int j = 0; j < tries; j++)
     {
         if (guesses[j] == letter)
         {
-            found = 1;
+            characterExists = 1;
             break;
         }
     }
-    return found;
+    return characterExists;
 }
 
-void showhang()
+void renderHangman()
 {
     printf("You already guessed %d times\n", tries);
 
     // Prints the secretword
     for (int i = 0; i < strlen(secretword); i++)
     {
-        if (alreadyguessed(secretword[i]))
+        if (checkIfGuessed(secretword[i]))
         {
             printf("%c ", secretword[i]);
         }
@@ -57,7 +57,7 @@ void showhang()
     printf("\n");
 }
 
-void choosenword()
+void generateWord()
 {
     sprintf(secretword, "MUSTANG");
 }
@@ -68,13 +68,13 @@ int main()
     int win = 0;
     int hanged = 0;
 
-    opening();
-    choosenword();
+    displayWelcomeMessage();
+    generateWord();
 
     do
     {
-        showhang();
-        guessing();
+        renderHangman();
+        handleUserGuess();
 
         tries++;
 
