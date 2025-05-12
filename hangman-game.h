@@ -1,4 +1,7 @@
 // Header files
+#define WORD_SIZE 20
+
+
 void displayWelcomeMessage();
 void handleUserGuess();
 void renderHangman();

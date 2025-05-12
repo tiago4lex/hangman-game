@@ -5,9 +5,9 @@
 #include "hangman-game.h" // Custom header file (not shown here)
 
 // Global variables
-char secretWord[20]; // The word to be guessed
-char guesses[26];    // Stores all guessed letters (maximum of 26 letters in the alphabet)
-int tries = 0;       // Number of guesses the player has made
+char secretWord[WORD_SIZE]; // The word to be guessed
+char guesses[26];           // Stores all guessed letters (maximum of 26 letters in the alphabet)
+int tries = 0;              // Number of guesses the player has made
 
 // Displays the welcome message to the player
 void displayWelcomeMessage()
@@ -44,20 +44,61 @@ int checkIfGuessed(char letter)
     return characterExists;
 }
 
-// Displays the current state of the word with guessed letters and underscores
+// New helper function: counts how many wrong guesses the user has made
+int countErrors()
+{
+    int wrong = 0;
+
+    // Loop through all player guesses
+    for (int i = 0; i < tries; i++)
+    {
+        int characterExists = 0;
+
+        // Check if the guessed character exists in the secret word
+        for (int j = 0; j < strlen(secretWord); j++)
+        {
+            if (guesses[i] == secretWord[j])
+            {
+                characterExists = 1; // Letter exists, so it's not a wrong guess
+                break;
+            }
+        }
+
+        if (!characterExists)
+            wrong++; // Count wrong guess
+    }
+
+    return wrong; // Return number of wrong guesses
+}
+
+// Displays the current hangman state and the guessed letters
 void renderHangman()
 {
-    printf("You already guessed %d times\n", tries);
+    int errors = countErrors(); // Get the number of incorrect guesses
 
+    printf("You already guessed %d times\n\n", tries);
+
+    printf("\n\n"); //
+    printf("  _______       \n");
+    printf(" |/      |      \n");
+    printf(" |      %c%c%c  \n", (errors >= 1 ? '(' : ' '), (errors >= 1 ? '_' : ' '), (errors >= 1 ? ')' : ' '));
+    printf(" |      %c%c%c  \n", (errors >= 3 ? '\\' : ' '), (errors >= 2 ? '|' : ' '), (errors >= 3 ? '/' : ' '));
+    printf(" |       %c     \n", (errors >= 2 ? '|' : ' '));
+    printf(" |      %c %c   \n", (errors >= 4 ? '/' : ' '), (errors >= 4 ? '\\' : ' '));
+    printf(" |              \n");
+    printf("_|___           \n");
+    printf("\n\n");
+
+    // Display the word progress (guessed letters and underscores)
     for (int i = 0; i < strlen(secretWord); i++)
     {
         if (checkIfGuessed(secretWord[i]))
         {
-            printf("%c ", secretWord[i]); // Show the correctly guessed letter
+            printf("%c ", secretWord[i]);
         }
         else
         {
-            printf("_ "); // Show underscore for letters not yet guessed
+            printf("_ ");
         }
     }
     printf("\n");
@@ -75,7 +116,7 @@ void addNewWord()
     // Check if the user responded with 'Y'
     if (yes == 'Y')
     {
-        char newWord[20];
+        char newWord[WORD_SIZE];
 
         // Prompt for the new word
         printf("What is the new word?: ");
@@ -192,5 +233,41 @@ int main()
 
     } while (!gameWon() && !hanged()); // Repeat while the game is not over
 
-    addNewWord();
+    if (gameWon())
+    {
+        printf("\nCongratulations, you WON!\n\n");
+
+        printf("       ___________      \n");
+        printf("      '._==_==_=_.'     \n");
+        printf("      .-\\:      /-.    \n");
+        printf("     | (|:.     |) |    \n");
+        printf("      '-|:.     |-'     \n");
+        printf("        \\::.    /      \n");
+        printf("         '::. .'        \n");
+        printf("           ) (          \n");
+        printf("         _.' '._        \n");
+        printf("        '-------'       \n\n");
+    }
+    else
+    {
+        printf("\nYou died, better luck next time!\n");
+        printf("The secret word was **%s**\n\n", secretWord);
+
+        printf("    _______________         \n");
+        printf("   /               \\       \n");
+        printf("  /                 \\      \n");
+        printf("//                   \\/\\  \n");
+        printf("\\|   XXXX     XXXX   | /   \n");
+        printf(" |   XXXX     XXXX   |/     \n");
+        printf(" |   XXX       XXX   |      \n");
+        printf(" |                   |      \n");
+        printf(" \\__      XXX      __/     \n");
+        printf("   |\\     XXX     /|       \n");
+        printf("   | |           | |        \n");
+        printf("   | I I I I I I I |        \n");
+        printf("   |  I I I I I I  |        \n");
+        printf("   \\_             _/       \n");
+        printf("     \\_         _/         \n");
+        printf("       \\_______/           \n");
+    }
 }
