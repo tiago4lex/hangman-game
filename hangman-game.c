@@ -63,11 +63,30 @@ void generateWord()
     sprintf(secretWord, "MUSTANG");
 }
 
+int hanged() {
+    int wrong = 0;
+
+    for(int i = 0; i < tries; i++) {
+        
+        int characterExists =  0;
+
+        for(int j = 0; j < strlen(secretWord); j++) {
+            if(guesses[i] == secretWord[j]) {
+                characterExists = 1;
+                break;
+            }
+        }
+
+        if (!characterExists) wrong++;
+    }
+
+    return wrong >= 5;
+}
+
 int main()
 {
 
     int win = 0;
-    int hanged = 0;
 
     displayWelcomeMessage();
     generateWord();
@@ -77,5 +96,5 @@ int main()
         renderHangman();
         handleUserGuess();
 
-    } while (!win && !hanged);
+    } while (!win && !hanged());
 }
