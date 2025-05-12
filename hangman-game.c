@@ -1,14 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-
-// Header files
-void displayWelcomeMessage();
-void handleUserGuess();
-void renderHangman();
-void generateWord();
-int checkIfGuessed();
-int hanged();
-int gameWong();
+#include "hangman-game.h"
 
 // Global variables
 char secretWord[20];
