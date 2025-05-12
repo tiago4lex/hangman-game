@@ -17,7 +17,6 @@ void displayWelcomeMessage()
     printf("/**************************/\n\n");
 }
 
-
 // Reads and stores the player's guess
 void handleUserGuess()
 {
@@ -64,6 +63,54 @@ void renderHangman()
     printf("\n");
 }
 
+// Adds a new word to the words.txt file
+void addNewWord()
+{
+    char yes;
+
+    // Ask the user if they want to add a new word
+    printf("Do you want to add a new word to the game? (Y/N) ");
+    scanf(" %c", &yes);
+
+    // Check if the user responded with 'Y'
+    if (yes == 'Y')
+    {
+        char newWord[20];
+
+        // Prompt for the new word
+        printf("What is the new word?: ");
+        scanf("%s", newWord);
+
+        FILE *f;
+
+        // Open the words.txt file in read+write mode
+        f = fopen("words.txt", "r+");
+        if (f == NULL)
+        {
+            // If the file couldn't be opened, display an error and exit
+            printf("Error: Could not open words.txt\n\n");
+            exit(1);
+        }
+
+        int totalWords;
+
+        // Read the current total number of words (assumed to be in the first line)
+        fscanf(f, "%d", &totalWords);
+        totalWords++;
+
+        // Move to the beginning of the file to update the word count
+        fseek(f, 0, SEEK_SET);
+        fprintf(f, "%d", totalWords);
+
+        // Move to the end of the file to append the new word
+        fseek(f, 0, SEEK_END);
+        fprintf(f, "\n%s", newWord);
+
+        // Close the file
+        fclose(f);
+    }
+}
+
 // Randomly selects a word from the words.txt file
 void generateWord()
 {
@@ -73,7 +120,7 @@ void generateWord()
 
     if (f == NULL)
     {
-        printf("Error: Could not open words.txt\n");
+        printf("Error: Could not open words.txt\n\n");
         exit(1); // Exit the program if the file can't be opened
     }
 
@@ -144,4 +191,6 @@ int main()
         handleUserGuess(); // Read new guess from player
 
     } while (!gameWon() && !hanged()); // Repeat while the game is not over
+
+    addNewWord();
 }

@@ -6,3 +6,4 @@ void generateWord();
 int checkIfGuessed(char letter);
 int hanged();
 int gameWong();
+void addNewWord();
