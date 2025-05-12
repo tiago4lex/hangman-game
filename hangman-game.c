@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-char secretword[20];
+char secretWord[20];
 char guesses[26];
 int tries = 0;
 
@@ -20,6 +20,7 @@ void handleUserGuess()
     scanf(" %c", &guess);
 
     guesses[tries] = guess;
+    tries++;
 }
 
 int checkIfGuessed(char letter)
@@ -42,12 +43,12 @@ void renderHangman()
 {
     printf("You already guessed %d times\n", tries);
 
-    // Prints the secretword
-    for (int i = 0; i < strlen(secretword); i++)
+    // Prints the secretWord
+    for (int i = 0; i < strlen(secretWord); i++)
     {
-        if (checkIfGuessed(secretword[i]))
+        if (checkIfGuessed(secretWord[i]))
         {
-            printf("%c ", secretword[i]);
+            printf("%c ", secretWord[i]);
         }
         else
         {
@@ -59,7 +60,7 @@ void renderHangman()
 
 void generateWord()
 {
-    sprintf(secretword, "MUSTANG");
+    sprintf(secretWord, "MUSTANG");
 }
 
 int main()
@@ -75,8 +76,6 @@ int main()
     {
         renderHangman();
         handleUserGuess();
-
-        tries++;
 
     } while (!win && !hanged);
 }
